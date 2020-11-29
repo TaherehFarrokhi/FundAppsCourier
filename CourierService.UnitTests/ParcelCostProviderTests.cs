@@ -27,7 +27,7 @@ namespace CourierService.UnitTests
         {
             //Arrange
             var sut = new ParcelCostProvider();
-            var parcel = new Parcel(width, length, height);
+            var parcel = new Parcel(width, length, height, 0);
 
             //Act
             var result = sut.ResolveParcelCost(parcel);

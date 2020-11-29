@@ -27,7 +27,7 @@ namespace CourierService.UnitTests
         {
             //Arrange
             var sut = new ParcelPriceCalculator(new ParcelCostProvider());
-            var parcel = new Parcel(width, length, height);
+            var parcel = new Parcel(width, length, height, 0);
 
             //Act
             var result = sut.Calculate(parcel);
@@ -52,7 +52,7 @@ namespace CourierService.UnitTests
         {
             //Arrange
             var sut = new ParcelPriceCalculator(new ParcelCostProvider());
-            var parcel = new Parcel(dimension, dimension, dimension);
+            var parcel = new Parcel(dimension, dimension, dimension, 0);
 
             //Act
             var result = sut.Calculate(parcel, new DeliveryOptions(fastDelivery));
@@ -68,7 +68,7 @@ namespace CourierService.UnitTests
         {
             //Arrange
             var sut = new ParcelPriceCalculator(new ParcelCostProvider());
-            var parcel = new Parcel(0, 0, 0);
+            var parcel = new Parcel(0, 0, 0, 0);
 
             //Act
             var result = sut.Calculate(parcel);
