@@ -1,4 +1,6 @@
-﻿namespace CourierService.Models
+﻿using System.Linq;
+
+namespace CourierService.Models
 {
     public sealed class Parcel
     {
@@ -14,5 +16,13 @@
         public decimal Length { get; }
         public decimal Height { get; }
         public decimal Weight { get; }
+    }
+
+    public static class ParcelExtensions
+    {
+        public static decimal MaxDimension(this Parcel parcel)
+        {
+            return new[] {parcel.Width, parcel.Length, parcel.Height}.Max();
+        }
     }
 }

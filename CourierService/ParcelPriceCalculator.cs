@@ -27,7 +27,8 @@ namespace CourierService
             if (parcel == null) throw new ArgumentNullException(nameof(parcel));
             var parcelMetadata = _parcelMetadataProvider.ResolveParcelMetadata(parcel);
 
-            var cost = parcelMetadata.Cost + _weightCostCalculator.GetCost(parcel.Weight, parcelMetadata.WightLimit);
+            var cost = parcelMetadata.Cost + _weightCostCalculator.GetCost(parcel.Weight, parcelMetadata.WightLimit,
+                parcelMetadata.OverweightCost);
 
             var fastDeliveryCost = deliveryOptions.FastDelivery ? cost : 0;
 

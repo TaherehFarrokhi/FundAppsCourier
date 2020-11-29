@@ -4,10 +4,10 @@ namespace CourierService
 {
     public sealed class WeightCostCalculator : IWeightCostCalculator
     {
-        public decimal GetCost(decimal weight, decimal wightLimit)
+        public decimal GetCost(decimal weight, decimal wightLimit, decimal overweightCost)
         {
             return weight > wightLimit
-                ? Math.Ceiling(weight - wightLimit) * 2
+                ? Math.Ceiling(weight - wightLimit) * overweightCost
                 : 0;
         }
     }

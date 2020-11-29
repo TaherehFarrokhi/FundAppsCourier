@@ -39,5 +39,33 @@ namespace CourierService.UnitTests
             result.ParcelType.Should().Be(expectedParcelType);
             result.WightLimit.Should().Be(expectedWeightLimit);
         }
+
+        [Theory]
+        [InlineData(8, 49.99, ParcelType.Small, 3, 1, 2)]
+        [InlineData(8, 50, ParcelType.Heavy, 50, 50, 1)]
+        [InlineData(10, 49.99, ParcelType.Medium, 8, 3, 2)]
+        [InlineData(10, 50, ParcelType.Heavy, 50, 50, 1)]
+        [InlineData(50, 49.99, ParcelType.Large, 15, 6, 2)]
+        [InlineData(50, 50, ParcelType.Heavy, 50, 50, 1)]
+        [InlineData(100, 49.99, ParcelType.XLarge, 25, 10, 2)]
+        [InlineData(100, 50, ParcelType.Heavy, 50, 50, 1)]
+        public void Given_ParcelWithHeavyWeight_Should_ReturnValidResultWithCorrectParcelTypeDefinition(
+            decimal dimension, decimal weight, ParcelType expectedParcelType, decimal expectedCost,
+            decimal expectedWeightLimit, decimal expectedOverweightCost)
+        {
+            //Arrange
+            var sut = new ParcelMetadataProvider();
+            var parcel = new Parcel(dimension, dimension, dimension, weight);
+
+            //Act
+            var result = sut.ResolveParcelMetadata(parcel);
+
+            //Assert
+            result.Should().NotBeNull();
+            result.Cost.Should().Be(expectedCost);
+            result.ParcelType.Should().Be(expectedParcelType);
+            result.WightLimit.Should().Be(expectedWeightLimit);
+            result.OverweightCost.Should().Be(expectedOverweightCost);
+        }
     }
 }
