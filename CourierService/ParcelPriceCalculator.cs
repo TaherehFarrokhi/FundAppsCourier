@@ -20,11 +20,11 @@ namespace CourierService
         public ParcelCalculationResult Calculate(Parcel parcel, DeliveryOptions deliveryOptions)
         {
             if (parcel == null) throw new ArgumentNullException(nameof(parcel));
-            var (_, cost) = _parcelCostProvider.ResolveParcelCost(parcel);
+            var parcelTypeDefinition = _parcelCostProvider.ResolveParcelCost(parcel);
 
-            var fastDeliveryCost = deliveryOptions.FastDelivery ? cost : 0;
+            var fastDeliveryCost = deliveryOptions.FastDelivery ? parcelTypeDefinition.Cost : 0;
             
-            return new ParcelCalculationResult(cost, fastDeliveryCost);
+            return new ParcelCalculationResult(parcelTypeDefinition.Cost, fastDeliveryCost);
         }
     }
 }
