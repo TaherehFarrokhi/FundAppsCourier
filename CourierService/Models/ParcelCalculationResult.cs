@@ -2,11 +2,14 @@
 {
     public sealed class ParcelCalculationResult
     {
-        public ParcelCalculationResult(decimal totalCost)
+        public ParcelCalculationResult(decimal deliveryCost, decimal fastDeliveryCost)
         {
-            TotalCost = totalCost;
+            DeliveryCost = deliveryCost;
+            FastDeliveryCost = fastDeliveryCost;
         }
 
-        public decimal TotalCost { get; }
+        public decimal DeliveryCost { get; }
+        public decimal FastDeliveryCost { get; }
+        public decimal TotalCost => DeliveryCost + FastDeliveryCost;
     }
 }

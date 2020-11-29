@@ -34,9 +34,35 @@ namespace CourierService.UnitTests
 
             //Assert
             result.Should().NotBeNull();
+            result.DeliveryCost.Should().Be(expected);
             result.TotalCost.Should().Be(expected);
         }
 
+        
+        [Theory]
+        [InlineData(8, true, 6)]
+        [InlineData(8, false, 3)]
+        [InlineData(10, true, 16)]
+        [InlineData(10, false, 8)]
+        [InlineData(50, true, 30)]
+        [InlineData(50, false, 15)]
+        [InlineData(100, true, 50)]
+        [InlineData(100, false, 25)]
+        public void Given_ParcelWithSpecificSizeAndFastDelivery_Should_ReturnValidResultWithCorrectTotalPrice(decimal dimension, bool fastDelivery, decimal expectedCost)
+        {
+            //Arrange
+            var sut = new ParcelPriceCalculator(new ParcelCostProvider());
+            var parcel = new Parcel(dimension, dimension, dimension);
+
+            //Act
+            var result = sut.Calculate(parcel, new DeliveryOptions(fastDelivery));
+
+            //Assert
+            result.Should().NotBeNull();
+            result.TotalCost.Should().Be(expectedCost);
+            result.FastDeliveryCost.Should().Be(fastDelivery ? result.DeliveryCost: 0);
+        }
+        
         [Fact]
         public void Given_Parcel_Should_ReturnValidResult()
         {
