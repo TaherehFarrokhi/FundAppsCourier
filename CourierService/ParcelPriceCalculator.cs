@@ -5,25 +5,19 @@ namespace CourierService
 {
     public sealed class ParcelPriceCalculator : IParcelPriceCalculator
     {
-        private readonly IParcelTypeCalculator _parcelTypeCalculator;
+        private readonly IParcelCostProvider _parcelCostProvider;
 
-        public ParcelPriceCalculator(IParcelTypeCalculator parcelTypeCalculator)
+        public ParcelPriceCalculator(IParcelCostProvider parcelCostProvider)
         {
-            _parcelTypeCalculator = parcelTypeCalculator ?? throw new ArgumentNullException(nameof(parcelTypeCalculator));
+            _parcelCostProvider = parcelCostProvider ?? throw new ArgumentNullException(nameof(parcelCostProvider));
         }
+
         public ParcelCalculationResult Calculate(Parcel parcel)
         {
             if (parcel == null) throw new ArgumentNullException(nameof(parcel));
-            var parcelType = _parcelTypeCalculator.GetParcelType(parcel);
-            
-            return parcelType switch
-            {
-                ParcelType.Small => new ParcelCalculationResult(3m),
-                ParcelType.Medium => new ParcelCalculationResult(8m),
-                ParcelType.Large => new ParcelCalculationResult(15m),
-                ParcelType.XLarge => new ParcelCalculationResult(25m),
-                _ => throw new ArgumentOutOfRangeException()
-            };
+            var (_, cost) = _parcelCostProvider.ResolveParcelCost(parcel);
+
+            return new ParcelCalculationResult(cost);
         }
     }
 }

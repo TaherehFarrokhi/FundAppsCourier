@@ -6,20 +6,6 @@ namespace CourierService.UnitTests
 {
     public class ParcelPriceCalculatorTests
     {
-        [Fact]
-        public void Given_Parcel_Should_ReturnValidResult()
-        {
-            //Arrange
-            var sut = new ParcelPriceCalculator(new ParcelTypeCalculator());
-            var parcel = new Parcel(0, 0, 0);
-
-            //Act
-            var result = sut.Calculate(parcel);
-
-            //Assert
-            result.Should().NotBeNull();
-        }
-
         [Theory]
         [InlineData(8, 8, 9, 3)]
         [InlineData(10, 9, 9, 8)]
@@ -36,10 +22,11 @@ namespace CourierService.UnitTests
         [InlineData(60, 70, 100, 25)]
         [InlineData(100, 1, 1, 25)]
         [InlineData(150, 100, 780, 25)]
-        public void Given_ParcelWithSpecificSize_Should_ReturnValidResultWithCorrectTotalPrice(decimal width, decimal length, decimal height, decimal expected)
+        public void Given_ParcelWithSpecificSize_Should_ReturnValidResultWithCorrectTotalPrice(decimal width,
+            decimal length, decimal height, decimal expected)
         {
             //Arrange
-            var sut = new ParcelPriceCalculator(new ParcelTypeCalculator());
+            var sut = new ParcelPriceCalculator(new ParcelCostProvider());
             var parcel = new Parcel(width, length, height);
 
             //Act
@@ -49,6 +36,19 @@ namespace CourierService.UnitTests
             result.Should().NotBeNull();
             result.TotalCost.Should().Be(expected);
         }
-        
+
+        [Fact]
+        public void Given_Parcel_Should_ReturnValidResult()
+        {
+            //Arrange
+            var sut = new ParcelPriceCalculator(new ParcelCostProvider());
+            var parcel = new Parcel(0, 0, 0);
+
+            //Act
+            var result = sut.Calculate(parcel);
+
+            //Assert
+            result.Should().NotBeNull();
+        }
     }
 }
