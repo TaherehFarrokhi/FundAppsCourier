@@ -1,6 +1,4 @@
-﻿using CourierService.Models;
-
-namespace CourierService
+﻿namespace CourierService.Models
 {
     public sealed class ParcelMetadata
     {
