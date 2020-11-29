@@ -7,6 +7,12 @@
             FastDelivery = fastDelivery;
         }
 
-        public bool FastDelivery { get; }
+        public bool FastDelivery { get; private set; }
+
+        public DeliveryOptions WithFastDelivery()
+        {
+            FastDelivery = true;
+            return this;
+        }
     }
 }

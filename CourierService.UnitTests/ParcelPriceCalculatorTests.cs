@@ -62,7 +62,7 @@ namespace CourierService.UnitTests
             var parcel = new Parcel(10, 10, 10, 10);
 
             //Act
-            var result = sut.Calculate(parcel, new DeliveryOptions(true));
+            var result = sut.Calculate(parcel, d => d.WithFastDelivery());
 
             //Assert
             result.Should().NotBeNull();

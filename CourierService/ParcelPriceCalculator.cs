@@ -17,16 +17,14 @@ namespace CourierService
                 weightCostCalculator ?? throw new ArgumentNullException(nameof(weightCostCalculator));
         }
 
-        public ParcelCalculationResult Calculate(Parcel parcel)
-        {
-            return Calculate(parcel, new DeliveryOptions(false));
-        }
-
-        public ParcelCalculationResult Calculate(Parcel parcel, DeliveryOptions deliveryOptions)
+        public ParcelCalculationResult Calculate(Parcel parcel, Action<DeliveryOptions> configureOptions = null)
         {
             if (parcel == null) throw new ArgumentNullException(nameof(parcel));
-            var parcelMetadata = _parcelMetadataProvider.ResolveParcelMetadata(parcel);
 
+            var deliveryOptions = new DeliveryOptions(false);
+            configureOptions?.Invoke(deliveryOptions);
+
+            var parcelMetadata = _parcelMetadataProvider.ResolveParcelMetadata(parcel);
             var cost = parcelMetadata.Cost + _weightCostCalculator.GetCost(parcel.Weight, parcelMetadata.WightLimit,
                 parcelMetadata.OverweightCost);
 
