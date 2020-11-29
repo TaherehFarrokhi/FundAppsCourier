@@ -23,14 +23,15 @@ namespace CourierService.UnitTests
         [InlineData(100, 1, 1, ParcelType.XLarge, 25, 10)]
         [InlineData(150, 100, 780, ParcelType.XLarge, 25, 10)]
         public void Given_ParcelWithSpecificSize_Should_ReturnValidResultWithCorrectParcelTypeDefinition(decimal width,
-            decimal length, decimal height, ParcelType expectedParcelType, decimal expectedCost, decimal expectedWeightLimit)
+            decimal length, decimal height, ParcelType expectedParcelType, decimal expectedCost,
+            decimal expectedWeightLimit)
         {
             //Arrange
-            var sut = new ParcelCostProvider();
+            var sut = new ParcelMetadataProvider();
             var parcel = new Parcel(width, length, height, 0);
 
             //Act
-            var result = sut.ResolveParcelCost(parcel);
+            var result = sut.ResolveParcelMetadata(parcel);
 
             //Assert
             result.Should().NotBeNull();

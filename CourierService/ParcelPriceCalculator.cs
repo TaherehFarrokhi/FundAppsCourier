@@ -5,11 +5,16 @@ namespace CourierService
 {
     public sealed class ParcelPriceCalculator : IParcelPriceCalculator
     {
-        private readonly IParcelCostProvider _parcelCostProvider;
+        private readonly IParcelMetadataProvider _parcelMetadataProvider;
+        private readonly IWeightCostCalculator _weightCostCalculator;
 
-        public ParcelPriceCalculator(IParcelCostProvider parcelCostProvider)
+        public ParcelPriceCalculator(IParcelMetadataProvider parcelMetadataProvider,
+            IWeightCostCalculator weightCostCalculator)
         {
-            _parcelCostProvider = parcelCostProvider ?? throw new ArgumentNullException(nameof(parcelCostProvider));
+            _parcelMetadataProvider =
+                parcelMetadataProvider ?? throw new ArgumentNullException(nameof(parcelMetadataProvider));
+            _weightCostCalculator =
+                weightCostCalculator ?? throw new ArgumentNullException(nameof(weightCostCalculator));
         }
 
         public ParcelCalculationResult Calculate(Parcel parcel)
@@ -20,11 +25,13 @@ namespace CourierService
         public ParcelCalculationResult Calculate(Parcel parcel, DeliveryOptions deliveryOptions)
         {
             if (parcel == null) throw new ArgumentNullException(nameof(parcel));
-            var parcelTypeDefinition = _parcelCostProvider.ResolveParcelCost(parcel);
+            var parcelMetadata = _parcelMetadataProvider.ResolveParcelMetadata(parcel);
 
-            var fastDeliveryCost = deliveryOptions.FastDelivery ? parcelTypeDefinition.Cost : 0;
-            
-            return new ParcelCalculationResult(parcelTypeDefinition.Cost, fastDeliveryCost);
+            var cost = parcelMetadata.Cost + _weightCostCalculator.GetCost(parcel.Weight, parcelMetadata.WightLimit);
+
+            var fastDeliveryCost = deliveryOptions.FastDelivery ? cost : 0;
+
+            return new ParcelCalculationResult(cost, fastDeliveryCost);
         }
     }
 }

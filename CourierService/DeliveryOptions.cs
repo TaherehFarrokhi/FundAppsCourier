@@ -2,11 +2,11 @@
 {
     public sealed class DeliveryOptions
     {
-        public bool FastDelivery { get; }
-
         public DeliveryOptions(bool fastDelivery)
         {
             FastDelivery = fastDelivery;
         }
+
+        public bool FastDelivery { get; }
     }
 }
